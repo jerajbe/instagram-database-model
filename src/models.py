@@ -17,47 +17,65 @@ class User(Base):
     lastame = Column(String(250), nullable=False)
     email = Column(String(250), unique=True)
     password = Column(String(250), nullable=False)
+    phone_number = Column(String(20), nullable=False)
+    user_name = Column(String(20), unique=True)
+
+
 
     def login(self):
         return{}
 
-class Character(Base):
-    __tablename__ = 'character'
+class Post(Base):
+    __tablename__ = 'post'
     # Here we define columns for the table address.
     # Notice that each column is also a normal Python instance attribute.
     id = Column(Integer, primary_key=True)
-    name = Column(String(250))
-    birth_date = Column(DateTime)
-    gender = Column(String(250))
-    height = Column(Integer)
-    skin_color = Column(String(250))
-    eye_color = Column(String(250))
-    best_friend = Column(String(250))
+    user_id = Column(Integer, ForeignKey('user.id'))
+    date = Column(DateTime)
+    tag = Column(String(250), nullable=True)
+    likes = Column(Integer)
+    comments = Column(String(250), nullable=True)
 
-class Planet(Base):
-    __tablename__ = 'planet'
+class DirectMessage(Base):
+    __tablename__ = 'direct_message'
     # Here we define columns for the table address.
     # Notice that each column is also a normal Python instance attribute.
     id = Column(Integer, primary_key=True)
-    name = Column(String(250))
-    color = Column(String(250))
-    climate = Column(String(250))
-    population = Column(Integer)
-    rotation_period = Column(Integer)
-    orbital_period = Column(Integer)
-    diameter = Column(Integer)
+    user_id = Column(Integer, ForeignKey('user.id'))
+    date = Column(DateTime)
+    
 
-class FavoriteCharacter(Base):
-    __tablename__ = 'favorite_character'
+
+
+# class Planet(Base):
+#     __tablename__ = 'planet'
+#     # Here we define columns for the table address.
+#     # Notice that each column is also a normal Python instance attribute.
+#     id = Column(Integer, primary_key=True)
+#     name = Column(String(250))
+#     color = Column(String(250))
+#     climate = Column(String(250))
+#     population = Column(Integer)
+#     rotation_period = Column(Integer)
+#     orbital_period = Column(Integer)
+#     diameter = Column(Integer)
+
+class LikedPost(Base):
+    __tablename__ = 'liked_post'
     id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey('user.id'))
-    character_id = Column(Integer, ForeignKey('character.id'))
+    post_id = Column(Integer, ForeignKey('post.id'))
 
-class FavoritePlanet(Base):
-    __tablename__ = 'favorite_planet'
+class MessageSent(Base):
+    __tablename__ = 'message_sent'
     id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey('user.id'))
-    planet_id = Column(Integer, ForeignKey('planet.id'))
+    direct_message = Column(Integer, ForeignKey('direct_message.id'))
+# class FavoritePlanet(Base):
+#     __tablename__ = 'favorite_planet'
+#     id = Column(Integer, primary_key=True)
+#     user_id = Column(Integer, ForeignKey('user.id'))
+#     planet_id = Column(Integer, ForeignKey('planet.id'))
     
     
 
